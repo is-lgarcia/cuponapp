@@ -10,7 +10,6 @@ val coupons = ArrayList<Coupon>()
 
 val apiService = getClientService()
 val call = apiService.getCoupons()
-
 call.enqueue(object : Callback<JsonObject> {
     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
         Log.e("ERROR: ", t.message)
@@ -32,7 +31,7 @@ call.enqueue(object : Callback<JsonObject> {
 })
 
 
-val apiKey = "69d1837829128f9565368ca704c63207"
+val apiKey = "33ef443837117c8864d2dfb9dd2481d1"
 val urlApi = "http://feed.linkmydeals.com/"
 
 fun getClientService(): ApiService {
