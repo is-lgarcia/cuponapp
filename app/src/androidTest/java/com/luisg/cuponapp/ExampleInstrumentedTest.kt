@@ -1,4 +1,4 @@
-package com.anncode.offersandcoupons
+package com.luisg.cuponapp
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
