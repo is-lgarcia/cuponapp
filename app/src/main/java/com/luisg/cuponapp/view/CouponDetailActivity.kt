@@ -1,4 +1,4 @@
-package com.luisg.cuponapp
+package com.luisg.cuponapp.view
 
 import android.content.Intent
 import android.net.Uri
@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.luisg.cuponapp.model.Coupon
+import com.luisg.cuponapp.R
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 class CouponDetailActivity : AppCompatActivity() {
 
-    private var couponSelected:Coupon? = null
+    private var couponSelected: Coupon? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,4 +1,4 @@
-package com.luisg.cuponapp
+package com.luisg.cuponapp.model
 
 import com.google.gson.JsonObject
 import java.lang.Exception
