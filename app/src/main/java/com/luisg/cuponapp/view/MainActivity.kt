@@ -1,51 +1,42 @@
 package com.luisg.cuponapp.view
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import com.luisg.cuponapp.model.Coupon
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.luisg.cuponapp.R
-import com.luisg.cuponapp.model.ApiAdapter
-import com.luisg.cuponapp.presenter.CouponPresenter
-import com.luisg.cuponapp.presenter.CouponPresenterImpl
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Exception
+import com.luisg.cuponapp.databinding.ActivityMainBinding
+import com.luisg.cuponapp.model.Coupon
+import com.luisg.cuponapp.viewmodel.CouponViewModel
 
-class MainActivity : AppCompatActivity(), CouponView {
+class MainActivity : AppCompatActivity(){
 
-    private var couponPresenter: CouponPresenter? = null
-    var rvCoupons: RecyclerView? = null
+    private var couponViewModel: CouponViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
-
-        couponPresenter = CouponPresenterImpl(this)
-
-        //VIEW
-        rvCoupons = findViewById(R.id.rvCoupons)
-        rvCoupons?.layoutManager = LinearLayoutManager(this)
-
-        getCoupons()
+        setupBinding(savedInstanceState)
     }
 
-    override fun getCoupons() {
-        couponPresenter?.gerCoupons()
+    fun setupBinding(savedInstanceState: Bundle?){
+        var activityMainBinding: ActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+
+        couponViewModel = ViewModelProvider.NewInstanceFactory().create(CouponViewModel::class.java)
+
+        activityMainBinding.setModel(couponViewModel)
+        setupListUpdate()
     }
 
-    override fun showCoupons(coupons: ArrayList<Coupon>?) {
-        try {
-            rvCoupons!!.adapter = RecyclerCouponsAdapter(coupons,R.layout.card_coupon)
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
+    fun setupListUpdate(){
+        couponViewModel?.callCoupon()
+        couponViewModel?.getCoupons()?.observe(this, Observer { coupons: List<Coupon> ->
+            Log.w("COUPON", coupons.get(0).title)
+            couponViewModel?.setCouponsInRecyclerAdapter(coupons)
+        })
     }
 
 }

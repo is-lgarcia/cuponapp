@@ -1,21 +1,26 @@
 package com.luisg.cuponapp.model
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.luisg.cuponapp.R
-import com.luisg.cuponapp.presenter.CouponPresenter
-import com.luisg.cuponapp.view.RecyclerCouponsAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CouponRepositoryImpl(var couponPresenter: CouponPresenter): CouponRepository {
+class CouponRepositoryImpl: CouponRepository {
 
-    override fun getCouponsAPI() {
+    private var coupons = MutableLiveData<List<Coupon>>()
+    //Subject MutableLiveData
+    //Observers List Coupon
+    //Change List Coupon - MutableLiveData
+    //Observe
+
+
+    override fun callCouponsAPI() {
 
         //CONTROLLER
-        val coupons: ArrayList<Coupon>? = ArrayList<Coupon>()
+        val couponList: ArrayList<Coupon>? = ArrayList<Coupon>()
         val apiAdaper = ApiAdapter()
         val apiService = apiAdaper.getClientService()
         val call = apiService.getCoupons()
@@ -30,12 +35,15 @@ class CouponRepositoryImpl(var couponPresenter: CouponPresenter): CouponReposito
                 offersJsonArray?.forEach { jsonElement: JsonElement ->
                     var jsonObject = jsonElement.asJsonObject
                     var coupon = Coupon(jsonObject)
-                    coupons?.add(coupon)
+                    couponList?.add(coupon)
                 }
-                //VIEW
-                couponPresenter.showCoupons(coupons)
+                coupons.value = couponList
             }
 
         })
+    }
+
+    override fun getCoupons(): MutableLiveData<List<Coupon>> {
+        return coupons
     }
 }
